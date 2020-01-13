@@ -1,28 +1,39 @@
 package sample;
 
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+
+
 
 public class Course {
     private String courseName;
     private double courseGrade;
     private double courseWeight;
+    private double courseX;
+    private double courseY;
 
     public Course(){
 
     }
 
-    public HBox drawCourse(){
-        HBox box = new HBox();
-        box.setSpacing(10);
+    public Course(String name, double grade, double weight){
+        this.courseGrade = grade;
+        this.courseName = name;
+        this.courseWeight = weight;
+    }
 
-        Text name = new Text(courseName);
-        Text grade = new Text(Double.toString(courseGrade));
-        Text weight = new Text(Double.toString(courseWeight));
+    public TextArea drawCourse(){
+        TextArea textArea = new TextArea();
+        textArea.setText(courseName + ": " + courseGrade + " " + courseWeight);
+        //textArea.setLayoutX(courseX);
+        //textArea.setLayoutY(courseY);
+        textArea.setMinSize(250, 20);
+        textArea.setMaxSize(250, 20);
 
-        box.getChildren().addAll(name, grade, weight);
+        return textArea;
 
-        return null;
     }
 
     public double getCourseWeight() {
@@ -37,6 +48,14 @@ public class Course {
         return courseName;
     }
 
+    public double getCourseX() {
+        return courseX;
+    }
+
+    public double getCourseY() {
+        return courseY;
+    }
+
     public void setCourseWeight(double courseWeight) {
         this.courseWeight = courseWeight;
     }
@@ -48,4 +67,13 @@ public class Course {
     public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
+
+    public void setCourseX(double courseX) {
+        this.courseX = courseX;
+    }
+
+    public void setCourseY(double courseY) {
+        this.courseY = courseY;
+    }
 }
+
