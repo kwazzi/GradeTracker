@@ -1,10 +1,13 @@
 package sample;
 // https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/ListView.html
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -21,13 +24,17 @@ import java.io.IOException;
 
 public class Visualizer {
 
+
     public Visualizer(Stage primaryStage) throws IOException {
+
         drawOrganizer(primaryStage);
     }
 
     public void drawOrganizer(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("TrackerGui.fxml")); // this is a pane i think??
         Pane rootPane = new Pane();
+        GradeTracker gradeTracker = new GradeTracker();
+        gradeTracker.draw();
 
         VBox vBox = new VBox();
         vBox.setLayoutX(236);
@@ -46,14 +53,21 @@ public class Visualizer {
         text.setLayoutY(50);
         text.setFont(Font.font("Verdana", FontWeight.BOLD, 40));
         rootPane.getChildren().add(text);
-        Course course = new Course("history", 98, 4);
-        vBox.getChildren().add(course.drawCourse());
+
         rootPane.getChildren().add(root);
         rootPane.getChildren().add(vBox);
+        rootPane.getChildren().add(gradeTracker.getListView());
+
         Scene scene = new Scene(rootPane, 500, 500);
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Grade Tracker");
         primaryStage.show();
     }
+        public ListView updateList(Pane rootPane, GradeTracker gradeTracker){
+            rootPane.getChildren().remove(gradeTracker.getListView());
+            rootPane.getChildren().add(gradeTracker.getListView());
+            return gradeTracker.getListView();
+        }
+
 }
