@@ -1,79 +1,74 @@
 package sample;
 
-import javafx.scene.control.TextArea;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.Cell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
+
+public class Controller {
+
+    @FXML
+    private TextField gradeText;
+    @FXML
+    private Pane fxPane;
+    @FXML
+    private VBox fxVbox;
+    @FXML
+    private TextField weightText;
+    @FXML
+    private Button finalButton;
+    @FXML
+    private TextField nameText;
 
 
 
-public class Course {
-    private String courseName;
-    private double courseGrade;
-    private double courseWeight;
-    private double courseX;
-    private double courseY;
 
-    public Course(){
-
-    }
-
-    public Course(String name, double grade, double weight){
-        this.courseGrade = grade;
-        this.courseName = name;
-        this.courseWeight = weight;
-    }
-
-    public TextArea drawCourse(){
-        TextArea textArea = new TextArea();
-        textArea.setText(courseName + ": " + courseGrade + " " + courseWeight);
-        //textArea.setLayoutX(courseX);
-        //textArea.setLayoutY(courseY);
-        textArea.setMinSize(250, 20);
-        textArea.setMaxSize(250, 20);
-
-        return textArea;
+    public Controller(){
 
     }
 
-    public double getCourseWeight() {
-        return courseWeight;
+    @FXML
+    void getData(ActionEvent event) {
+
     }
 
-    public double getCourseGrade() {
-        return courseGrade;
+    @FXML
+    void addCourse(ActionEvent event) {
+        try {
+            System.out.println("ahaha");
+            GradeTracker gradeTracker = new GradeTracker();
+            String thisName = nameText.getText();
+            int thisGrade = Integer.parseInt(gradeText.getText());
+            int thisWeight = Integer.parseInt(weightText.getText());
+            Course course = new Course(thisName, thisGrade, thisWeight);
+            gradeTracker.getCourses().add(course);
+            System.out.println(gradeTracker.getCourses().get(0).getCourseName());
+            //System.out.println(course.getCourseName() + " " + course.getCourseGrade() + " " + course.getCourseWeight());
+            gradeTracker.getNames().add(course.getCourseName());
+            gradeTracker.getListView().setItems(gradeTracker.getNames());
+            System.out.println(gradeTracker.getNames().get(0));
+
+        }catch(Exception e){
+
+        }
+
+        // finalButton.setBackground(new Background((new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY))));
     }
 
-    public String getCourseName() {
-        return courseName;
-    }
-
-    public double getCourseX() {
-        return courseX;
-    }
-
-    public double getCourseY() {
-        return courseY;
-    }
-
-    public void setCourseWeight(double courseWeight) {
-        this.courseWeight = courseWeight;
-    }
-
-    public void setCourseGrade(double courseGrade) {
-        this.courseGrade = courseGrade;
-    }
-
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
-    }
-
-    public void setCourseX(double courseX) {
-        this.courseX = courseX;
-    }
-
-    public void setCourseY(double courseY) {
-        this.courseY = courseY;
-    }
 }
+
+
 
