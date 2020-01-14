@@ -1,15 +1,21 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Cell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 
@@ -27,6 +33,7 @@ public class Controller {
     private Button finalButton;
     @FXML
     private TextField nameText;
+    private GradeTracker gradeTracker = new GradeTracker();
 
 
 
@@ -42,11 +49,7 @@ public class Controller {
     @FXML
     void addCourse(ActionEvent event) {
         try {
-            System.out.println("ahaha");
-            GradeTracker gradeTracker = new GradeTracker();
-            Course course = new Course(nameText.getText(), Integer.parseInt(gradeText.getText()), Integer.parseInt(weightText.getText()));
-            gradeTracker.getCourses().add(course);
-            System.out.println(course.getCourseName() + " " + course.getCourseGrade() + " " + course.getCourseWeight());
+             gradeTracker.controllerUpdate(nameText, gradeText, weightText);
 
         }catch(Exception e){
 
