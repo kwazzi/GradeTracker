@@ -23,14 +23,13 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Visualizer {
+    Stage primaryStage;
 
-
-    public Visualizer(Stage primaryStage) throws IOException {
-
-        drawOrganizer(primaryStage);
+    public Visualizer(Stage PrimaryStage) throws IOException {
+        primaryStage = PrimaryStage;
     }
 
-    public void drawOrganizer(Stage primaryStage) throws IOException {
+    public void drawOrganizer() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("TrackerGui.fxml")); // this is a pane i think??
         Pane rootPane = new Pane();
         GradeTracker gradeTracker = new GradeTracker();
@@ -65,8 +64,7 @@ public class Visualizer {
         primaryStage.show();
     }
         public ListView updateList(Pane rootPane, GradeTracker gradeTracker){
-            rootPane.getChildren().remove(gradeTracker.getListView());
-            rootPane.getChildren().add(gradeTracker.getListView());
+            updateList(rootPane, gradeTracker);
             return gradeTracker.getListView();
         }
 
