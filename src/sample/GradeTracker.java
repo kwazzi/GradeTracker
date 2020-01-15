@@ -11,9 +11,23 @@ public class GradeTracker {
     ObservableList<Course> names = FXCollections.observableArrayList();
     ListView<Course> listView = new ListView<>();
     String text;
+    double gpa;
 
     public GradeTracker(){
         listView.setItems(names);
+    }
+
+    public void calculateGpa(){
+        double grade;
+        double currentTotal = 0;
+        Course thisCourse;
+
+        for (int i = 0; i < courses.size(); i++) {
+            thisCourse = courses.get(i);
+            grade = (thisCourse.getCourseGrade() * thisCourse.getCourseWeight()) / 100;
+            currentTotal = grade + currentTotal;
+        }
+        gpa = currentTotal / courses.size();
     }
 
     public void infoUpdate(TextField nameText, TextField gradeText, TextField weightText){
@@ -23,7 +37,6 @@ public class GradeTracker {
             controllerUpdate(thisName, thisGrade, thisWeight);
     }
 
-
     public void controllerUpdate(String name, int grade, int weight ){
         Course course = new Course(name, grade, weight);
         courses.add(course);
@@ -32,9 +45,12 @@ public class GradeTracker {
         for(int i = 0; i < names.size(); i ++) {
             System.out.println(listView.getItems().get(i));
         }
-        text = "Ugh";
-        System.out.println(text);
-        course.drawCourse();
+        System.out.println(text); }
+
+    public void draw(){
+        listView.setLayoutX(236);
+        listView.setLayoutY(90);
+        text = "Grade Tracker";
     }
 
     public ArrayList<Course> getCourses() {
@@ -45,13 +61,6 @@ public class GradeTracker {
         this.courses = courses;
     }
 
-    public void draw(){
-        //setTheList();
-        listView.setLayoutX(236);
-        listView.setLayoutY(90);
-        text = "Grade Tracker";
-    }
-
     public ListView<Course> getListView() {
         return listView;
     }
@@ -59,7 +68,7 @@ public class GradeTracker {
     public void setListView(ListView<Course> listView) {
         this.listView = listView;
     }
-    
+
     public void setNames(ObservableList<Course> names) {
         this.names = names;
     }
@@ -75,5 +84,4 @@ public class GradeTracker {
     public void setText(String text) {
         this.text = text;
     }
-
-
+}
