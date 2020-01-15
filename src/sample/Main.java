@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -14,16 +16,17 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Visual extends Application {
-// maybe put the start function inside of visualizer so you can use primary stage in other parts of the program
+    GradeTracker gradeTracker;
+    // maybe put the start function inside of visualizer so you can use primary stage in other parts of the program
     @Override
     public void start(Stage primaryStage) throws Exception{
+        gradeTracker = new GradeTracker();
         drawOrganizer(primaryStage);
     }
 
     public void drawOrganizer(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("TrackerGui.fxml")); // this is a pane i think??
         Pane rootPane = new Pane();
-        GradeTracker gradeTracker = new GradeTracker();
         gradeTracker.draw();
 
         VBox vBox = new VBox();
@@ -37,15 +40,50 @@ public class Visual extends Application {
                 "-fx-border-insets: 5;" +
                 "-fx-border-radius: 5;" +
                 "-fx-border-color: black;");
+
         // USE LISTVIEW ////////////////////////
-        Text text = new Text("Grade Tracker");
+        Text text = new Text(gradeTracker.getText());
         text.setLayoutX(80);
         text.setLayoutY(50);
         text.setFont(Font.font("Verdana", FontWeight.BOLD, 40));
-        rootPane.getChildren().add(text);
-        rootPane.getChildren().addAll(root);
-        rootPane.getChildren().add(vBox);
-        rootPane.getChildren().add(gradeTracker.getListView());
+
+        Button confirm = new Button();
+        confirm.setText("Confirm");
+        confirm.setPrefSize(60,25);
+        confirm.setLayoutX(134);
+        confirm.setLayoutY(270);
+
+        TextField nameText = new TextField();
+        nameText.setPrefSize(150,25);
+        nameText.setLayoutX(50);
+        nameText.setLayoutY(130);
+        nameText.setPromptText("Name");
+
+        TextField gradeText = new TextField();
+        gradeText.setPrefSize(150,25);
+        gradeText.setLayoutX(50);
+        gradeText.setLayoutY(180);
+        gradeText.setPromptText("Grade");
+
+        TextField weightText = new TextField();
+        weightText.setPrefSize(150,25);
+        weightText.setLayoutX(50);
+        weightText.setLayoutY(230);
+        weightText.setPromptText("Weight");
+
+        confirm.setOnAction(event -> {
+            try {
+                gradeTracker.infoUpdate(nameText, gradeText, weightText);
+                nameText.clear();
+                gradeText.clear();
+                weightText.clear();
+            }catch(NumberFormatException e){
+                System.out.println("Please submit the correct thing");
+            }
+        });
+
+        rootPane.getChildren().addAll(text, root, vBox, gradeTracker.getListView());
+        rootPane.getChildren().addAll(confirm, nameText, gradeText, weightText);
 
         Scene scene = new Scene(rootPane, 500, 500);
 
@@ -53,6 +91,7 @@ public class Visual extends Application {
         primaryStage.setTitle("Grade Tracker");
         primaryStage.show();
     }
+
 
 
     public static void main(String[] args) {
