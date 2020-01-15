@@ -4,54 +4,37 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-
-import java.awt.*;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GradeTracker {
     ArrayList<Course> courses = new ArrayList<>();
-    ObservableList<Course> names = FXCollections.observableArrayList(new Course("history", 98, 7));
+    ObservableList<Course> names = FXCollections.observableArrayList();
     ListView<Course> listView = new ListView<>();
+    String text;
 
     public GradeTracker(){
         listView.setItems(names);
     }
 
+    public void infoUpdate(TextField nameText, TextField gradeText, TextField weightText){
+            String thisName = nameText.getText();
+            int thisGrade = Integer.parseInt(gradeText.getText());
+            int thisWeight = Integer.parseInt(weightText.getText());
+            controllerUpdate(thisName, thisGrade, thisWeight);
+    }
 
-    public void controllerUpdate(TextField nameText, TextField gradeText, TextField weightText){
-        String thisName = nameText.getText();
-        int thisGrade = Integer.parseInt(gradeText.getText());
-        int thisWeight = Integer.parseInt(weightText.getText());
-        // this can just update the info and then we can draw it using a separate function so that
-        // controller doesnt need javafx data
 
-        Course course = new Course(thisName, thisGrade, thisWeight);
+    public void controllerUpdate(String name, int grade, int weight ){
+        Course course = new Course(name, grade, weight);
         courses.add(course);
-        //System.out.println(course.getCourseName() + " " + course.getCourseGrade() + " " + course.getCourseWeight());
         names.add(course);
-        //setTheList();
+        listView.setItems(names);
         for(int i = 0; i < names.size(); i ++) {
-            System.out.println(names.get(i));
+            System.out.println(listView.getItems().get(i));
         }
+        text = "Ugh";
+        System.out.println(text);
         course.drawCourse();
-        //updateList();
-    }
-
-    public void setTheList(){
-        listView.setItems(names);
-        // we need to draw the list to the screen again
-    }
-
-    public ListView updateList(){
-        ListView<Course> current = new ListView<>();
-        listView.setItems(names);
-        listView = current;
-
-        return listView;
     }
 
     public ArrayList<Course> getCourses() {
@@ -66,6 +49,7 @@ public class GradeTracker {
         //setTheList();
         listView.setLayoutX(236);
         listView.setLayoutY(90);
+        text = "Grade Tracker";
     }
 
     public ListView<Course> getListView() {
@@ -75,9 +59,7 @@ public class GradeTracker {
     public void setListView(ListView<Course> listView) {
         this.listView = listView;
     }
-
-
-
+    
     public void setNames(ObservableList<Course> names) {
         this.names = names;
     }
@@ -85,5 +67,13 @@ public class GradeTracker {
     public ObservableList<Course> getNames() {
         return names;
     }
-}
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
 
