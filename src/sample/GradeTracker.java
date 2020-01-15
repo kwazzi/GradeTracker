@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -17,29 +18,32 @@ public class GradeTracker {
     ListView<Course> listView = new ListView<>();
 
     public GradeTracker(){
-
-
+        listView.setItems(names);
     }
 
-    public void controllerUpdate(TextField nameText, TextField gradeText, TextField weightText){
 
+    public void controllerUpdate(TextField nameText, TextField gradeText, TextField weightText){
         String thisName = nameText.getText();
         int thisGrade = Integer.parseInt(gradeText.getText());
         int thisWeight = Integer.parseInt(weightText.getText());
+        // this can just update the info and then we can draw it using a separate function so that
+        // controller doesnt need javafx data
 
         Course course = new Course(thisName, thisGrade, thisWeight);
         courses.add(course);
         //System.out.println(course.getCourseName() + " " + course.getCourseGrade() + " " + course.getCourseWeight());
-        getNames().add(course);
-        setTheList();
-        for(int i = 0; i < getNames().size(); i ++) {
-            System.out.println(getNames().get(i));
+        names.add(course);
+        //setTheList();
+        for(int i = 0; i < names.size(); i ++) {
+            System.out.println(names.get(i));
         }
-        updateList();
+        course.drawCourse();
+        //updateList();
     }
 
     public void setTheList(){
         listView.setItems(names);
+        // we need to draw the list to the screen again
     }
 
     public ListView updateList(){
@@ -59,7 +63,7 @@ public class GradeTracker {
     }
 
     public void draw(){
-        setTheList();
+        //setTheList();
         listView.setLayoutX(236);
         listView.setLayoutY(90);
     }
@@ -72,6 +76,8 @@ public class GradeTracker {
         this.listView = listView;
     }
 
+
+
     public void setNames(ObservableList<Course> names) {
         this.names = names;
     }
@@ -80,3 +86,4 @@ public class GradeTracker {
         return names;
     }
 }
+
