@@ -17,16 +17,18 @@ import java.io.IOException;
 
 public class Visual extends Application {
     GradeTracker gradeTracker;
-    // maybe put the start function inside of visualizer so you can use primary stage in other parts of the program
     @Override
     public void start(Stage primaryStage) throws Exception{
+        // creating a grade tracker and drawing the gui
         gradeTracker = new GradeTracker();
         drawOrganizer(primaryStage);
     }
 
     public void drawOrganizer(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("TrackerGui.fxml")); // this is a pane i think??
+
         Pane rootPane = new Pane();
+        // sets listView location and the title text
         gradeTracker.draw();
 
         VBox vBox = new VBox();
@@ -41,7 +43,6 @@ public class Visual extends Application {
                 "-fx-border-radius: 5;" +
                 "-fx-border-color: black;");
 
-        // USE LISTVIEW ////////////////////////
         Text text = new Text(gradeTracker.getText());
         text.setLayoutX(80);
         text.setLayoutY(50);
@@ -52,6 +53,8 @@ public class Visual extends Application {
         confirm.setPrefSize(60,25);
         confirm.setLayoutX(134);
         confirm.setLayoutY(270);
+
+        //////////// TextFields /////////////////
 
         TextField nameText = new TextField();
         nameText.setPrefSize(150,25);
@@ -74,6 +77,7 @@ public class Visual extends Application {
         confirm.setOnAction(event -> {
             try {
                 gradeTracker.infoUpdate(nameText, gradeText, weightText);
+                gradeTracker.calculateGpa();
                 nameText.clear();
                 gradeText.clear();
                 weightText.clear();
