@@ -32,6 +32,7 @@ public class GradeTracker {
             currentTotal = grade + currentTotal;
         }
         gpa = currentTotal / courses.size();
+        setGpa(gpa);
     }
 
     public void calculateAverage(){
@@ -46,13 +47,14 @@ public class GradeTracker {
             currentTotal = currentTotal + grade;
         }
         totalAverage = currentTotal / courses.size();
+        setTotalAverage(totalAverage);
     }
 
     public void infoUpdate(TextField nameText, TextField gradeText, TextField weightText){
-            String thisName = nameText.getText();
-            int thisGrade = Integer.parseInt(gradeText.getText());
-            int thisWeight = Integer.parseInt(weightText.getText());
-            controllerUpdate(thisName, thisGrade, thisWeight);
+        String thisName = nameText.getText();
+        int thisGrade = Integer.parseInt(gradeText.getText());
+        int thisWeight = Integer.parseInt(weightText.getText());
+        controllerUpdate(thisName, thisGrade, thisWeight);
     }
 
     public void controllerUpdate(String name, int grade, int weight ) {
@@ -61,7 +63,7 @@ public class GradeTracker {
         names.add(course);
         listView.setItems(names);
         for (int i = 0; i < names.size(); i++) {
-            System.out.println(listView.getItems().get(i));
+
         }
     }
 
@@ -106,6 +108,7 @@ public class GradeTracker {
     }
 
     public void setGpa(double gpa) {
+        gpa = Math.round(gpa * 100.0) / 100.0;
         this.gpa = gpa;
     }
 
@@ -114,7 +117,9 @@ public class GradeTracker {
     }
 
     public void setTotalAverage(double totalAverage) {
+        totalAverage = Math.round(totalAverage * 100.0) / 100.0;
         this.totalAverage = totalAverage;
     }
 }
+
 
