@@ -7,12 +7,9 @@
 <?import javafx.scene.layout.*?>
 
 <Pane fx:id="fxPane" maxHeight="500" maxWidth="500" minHeight="500" minWidth="500" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-   <children>
+    <children>
 
-      <TextField fx:id="nameText" layoutX="50.0" layoutY="130.0" onAction="#getData" promptText="Name"  />
-      <TextField fx:id="gradeText" layoutX="50.0" layoutY="180.0"  onAction="#getData" promptText="Grade" />
-      <TextField fx:id="weightText" layoutX="50.0" layoutY="230.0"  onAction="#getData" promptText="Weight" />
-      <Button fx:id="finalButton" layoutX="134.0" layoutY="270.0" mnemonicParsing="false" onAction="#addCourse" text="Confirm" />
-   </children>
+
+    </children>
 </Pane>
 
