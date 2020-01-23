@@ -25,8 +25,9 @@ public class Visual extends Application {
     Stage primaryStage;
     Text gpaText;
     Text averageText;
+
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         primaryStage = primaryStage;
         // creating a grade tracker and drawing the gui
         gradeTracker = new GradeTracker();
@@ -44,8 +45,8 @@ public class Visual extends Application {
         VBox vBox = new VBox();
         vBox.setLayoutX(236);
         vBox.setLayoutY(90);
-        vBox.setMaxSize(250,400);
-        vBox.setMinSize(250,400);
+        vBox.setMaxSize(250, 400);
+        vBox.setMinSize(250, 400);
         vBox.setStyle("-fx-padding: 10;" +
                 "-fx-border-style: solid inside;" +
                 "-fx-border-width: 2;" +
@@ -97,7 +98,7 @@ public class Visual extends Application {
 /// Buttton ///////////////
         Button confirm = new Button();
         confirm.setText("Confirm");
-        confirm.setPrefSize(60,25);
+        confirm.setPrefSize(60, 25);
         confirm.setLayoutX(134);
         confirm.setLayoutY(270);
         //confirm.setBackground(new Background(new BackgroundFill(Color.rgb(225,245,245), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -105,7 +106,7 @@ public class Visual extends Application {
 
 ///// Text Fields ////////////////
         TextField nameText = new TextField();
-        nameText.setPrefSize(150,25);
+        nameText.setPrefSize(150, 25);
         nameText.setLayoutX(50);
         nameText.setLayoutY(130);
         nameText.setPromptText("Name");
@@ -113,14 +114,14 @@ public class Visual extends Application {
         nameText.requestFocus();
 
         TextField gradeText = new TextField();
-        gradeText.setPrefSize(150,25);
+        gradeText.setPrefSize(150, 25);
         gradeText.setLayoutX(50);
         gradeText.setLayoutY(180);
         gradeText.setPromptText("Grade");
         gradeText.setEffect(dropShadow);
 
         TextField weightText = new TextField();
-        weightText.setPrefSize(150,25);
+        weightText.setPrefSize(150, 25);
         weightText.setLayoutX(50);
         weightText.setLayoutY(230);
         weightText.setPromptText("Weight");
@@ -128,54 +129,57 @@ public class Visual extends Application {
         textFieldCode(nameText, gradeText, weightText, confirm);
 
 //// Button Action
-        confirm.setOnAction(event -> {
-            try {
-                setButtons(nameText, gradeText, weightText, gpaText, averageText);
-                gradeTracker.calculateGpa();
-                nameText.requestFocus();
-            }catch(NumberFormatException e){
-                System.out.println("Please submit the correct thing");
-            }
-        });
-        confirm.setOnKeyPressed(event -> {
-            try {
-                setButtons(nameText, gradeText, weightText, gpaText, averageText);
-                gradeTracker.calculateGpa();
-                nameText.requestFocus();
-            }catch(NumberFormatException e){
-                System.out.println("Please submit the correct thing");
-            }
-        });
+        if(gradeTracker.getListView().getSelectionModel().isEmpty()) {
+            confirm.setOnAction(event -> {
+                try {
+                    setButtons(nameText, gradeText, weightText, gpaText, averageText);
+                    gradeTracker.calculateGpa();
+                    nameText.requestFocus();
+                } catch (NumberFormatException e) {
+                    System.out.println("Please submit the correct thing");
+                }
+            });
+            confirm.setOnKeyPressed(event -> {
+                try {
+                    setButtons(nameText, gradeText, weightText, gpaText, averageText);
+                    gradeTracker.calculateGpa();
+                    nameText.requestFocus();
+                } catch (NumberFormatException e) {
+                    System.out.println("Please submit the correct thing");
+                }
+            });
+        }
+
 
 
         rootPane.getChildren().addAll(title, vBox, gradeTracker.getListView());
-        rootPane.getChildren().addAll(confirm, nameText, gradeText, weightText, subTitle );
+        rootPane.getChildren().addAll(confirm, nameText, gradeText, weightText, subTitle);
         rootPane.getChildren().addAll(gpaText, averageText);
         courseView(nameText, gradeText, weightText, confirm);
 
         Scene scene = new Scene(rootPane, 700, 500);
-        scene.setFill(Color.rgb(225,245,245));
+        scene.setFill(Color.rgb(225, 245, 245));
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Grade Tracker");
         primaryStage.show();
     }
 
-    public void textFieldCode(TextField nameText, TextField gradeText, TextField weightText, Button confirm){
+    public void textFieldCode(TextField nameText, TextField gradeText, TextField weightText, Button confirm) {
         nameText.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
+            if (event.getCode().equals(KeyCode.ENTER)) {
                 gradeText.requestFocus();
             }
         });
 
         gradeText.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
+            if (event.getCode().equals(KeyCode.ENTER)) {
                 weightText.requestFocus();
             }
         });
 
         weightText.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
+            if (event.getCode().equals(KeyCode.ENTER)) {
                 confirm.requestFocus();
             }
         });
@@ -187,6 +191,7 @@ public class Visual extends Application {
             public void changed(ObservableValue<? extends Course> observable,
                                 Course oldValue, Course newValue) {
                 // new value is the selected course
+
                 textFieldCode(nameText, gradeText, weightText, confirm);
                 nameText.setText(newValue.getCourseName());
                 gradeText.setText(Double.toString(newValue.getCourseGrade()));
@@ -201,42 +206,42 @@ so i think the answer is to just change it after i call this function maybe?? //
 idk im really tired right now
 maybe the answer is to get rid of the listener?? but then how would it know if its selected?? who knows
 the bad answer is to just make a separate button or different text fields but thats dumbbbbb
-
  */
-                confirm.setOnAction(event -> {
-                    newValue.setCourseName(nameText.getText());
-                    newValue.setCourseGrade(Double.parseDouble(gradeText.getText()));
-                    newValue.setCourseWeight(Double.parseDouble(weightText.getText()));
-                    refresh();
-                    System.out.println("ugh");
-                    nameText.clear();
-                    weightText.clear();
-                    gradeText.clear();
-                    gradeTracker.getListView().getSelectionModel().clearSelection();
-                });
+                if(gradeTracker.getListView().getSelectionModel().isEmpty()) {
+                    System.out.print("dont do this you trick");
+                }
+                else{
+                    confirm.setOnAction(event -> {
+                        newValue.setCourseName(nameText.getText());
+                        newValue.setCourseGrade(Double.parseDouble(gradeText.getText()));
+                        newValue.setCourseWeight(Double.parseDouble(weightText.getText()));
+                        refresh();
+                        System.out.println("ugh");
+                        nameText.clear();
+                        weightText.clear();
+                        gradeText.clear();
+                        gradeTracker.getListView().getSelectionModel().clearSelection();
+                        refreshButton(confirm, nameText, gradeText, weightText);
+                    });
 
-/*
-                confirm.setOnKeyPressed(event -> {
-                    newValue.setCourseName(nameText.getText());
-                    newValue.setCourseGrade(Double.parseDouble(gradeText.getText()));
-                    newValue.setCourseWeight(Double.parseDouble(weightText.getText()));
-                    refresh();
-                    System.out.println("ugh");
-                    nameText.clear();
-                    weightText.clear();
-                    gradeText.clear();
-                    gradeTracker.getListView().getSelectionModel().clearSelection();
-                });
-
- */
-
-
+                    confirm.setOnKeyPressed(event -> {
+                        newValue.setCourseName(nameText.getText());
+                        newValue.setCourseGrade(Double.parseDouble(gradeText.getText()));
+                        newValue.setCourseWeight(Double.parseDouble(weightText.getText()));
+                        refresh();
+                        nameText.clear();
+                        weightText.clear();
+                        gradeText.clear();
+                        gradeTracker.getListView().getSelectionModel().clearSelection();
+                        refreshButton(confirm, nameText, gradeText, weightText);
+                    });
+                }
             }
         });
     }
 
 
-    public void setButtons(TextField nameText, TextField gradeText, TextField weightText, Text gpaText, Text averageText){
+    public void setButtons(TextField nameText, TextField gradeText, TextField weightText, Text gpaText, Text averageText) {
         gradeTracker.infoUpdate(nameText, gradeText, weightText);
         gradeTracker.calculateGpa();
         gradeTracker.calculateAverage();
@@ -246,13 +251,36 @@ the bad answer is to just make a separate button or different text fields but th
         refresh();
     }
 
-    public void refresh(){
+    public void refresh() {
         gpaText.setText("Gpa : " + gradeTracker.getGpa());
         averageText.setText("Average: " + gradeTracker.getTotalAverage());
         gradeTracker.getListView().refresh();
+
     }
 
+    public void refreshButton(Button confirm, TextField nameText, TextField gradeText, TextField weightText){
 
+            if (gradeTracker.getListView().getSelectionModel().isEmpty()) {
+                confirm.setOnAction(event -> {
+                    try {
+                        setButtons(nameText, gradeText, weightText, gpaText, averageText);
+                        gradeTracker.calculateGpa();
+                        nameText.requestFocus();
+                    } catch (NumberFormatException e) {
+                        System.out.println("Please submit the correct thing");
+                    }
+                });
+                confirm.setOnKeyPressed(event -> {
+                    try {
+                        setButtons(nameText, gradeText, weightText, gpaText, averageText);
+                        gradeTracker.calculateGpa();
+                        nameText.requestFocus();
+                    } catch (NumberFormatException e) {
+                        System.out.println("Please submit the correct thing");
+                    }
+                });
+            }
+    }
 
     public static void main(String[] args) {
         launch(args);
