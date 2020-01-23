@@ -120,6 +120,7 @@ public class GradeTracker {
         totalAverage = Math.round(totalAverage * 100.0) / 100.0;
         this.totalAverage = totalAverage;
     }
+    
 }
 
 
