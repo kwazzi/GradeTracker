@@ -155,7 +155,7 @@ public class Visual extends Application {
         rootPane.getChildren().addAll(title, vBox, gradeTracker.getListView());
         rootPane.getChildren().addAll(confirm, nameText, gradeText, weightText, subTitle);
         rootPane.getChildren().addAll(gpaText, averageText);
-        courseView(nameText, gradeText, weightText, confirm);
+        courseView(nameText, gradeText, weightText, confirm, rootPane, dropShadow);
 
         Scene scene = new Scene(rootPane, 700, 500);
         scene.setFill(Color.rgb(225, 245, 245));
@@ -185,7 +185,7 @@ public class Visual extends Application {
         });
     }
 
-    public void courseView(TextField nameText, TextField gradeText, TextField weightText, Button confirm) {
+    public void courseView(TextField nameText, TextField gradeText, TextField weightText, Button confirm, Pane pane, DropShadow shadow) {
         gradeTracker.getListView().getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Course>() {
             @Override
             public void changed(ObservableValue<? extends Course> observable,
@@ -211,6 +211,24 @@ the bad answer is to just make a separate button or different text fields but th
                     System.out.print("dont do this you trick");
                 }
                 else{
+                    Button delete = new Button("Delete");
+                    delete.setPrefSize(60, 25);
+                    delete.setLayoutX(54);
+                    delete.setLayoutY(270);
+                    delete.setEffect(shadow);
+                    pane.getChildren().add(delete);
+
+                    delete.setOnAction(event -> {
+                        if(gradeTracker.getListView().getSelectionModel().isEmpty()){
+                            // error: no item selected
+                        }
+                        else{
+                            gradeTracker.getNames().remove(newValue);
+                            refresh();
+                        }
+
+                    });
+
                     confirm.setOnAction(event -> {
                         newValue.setCourseName(nameText.getText());
                         newValue.setCourseGrade(Double.parseDouble(gradeText.getText()));
@@ -221,7 +239,7 @@ the bad answer is to just make a separate button or different text fields but th
                         weightText.clear();
                         gradeText.clear();
                         gradeTracker.getListView().getSelectionModel().clearSelection();
-                        refreshButton(confirm, nameText, gradeText, weightText);
+                        refreshButton(confirm, nameText, gradeText, weightText, pane);
                     });
 
                     confirm.setOnKeyPressed(event -> {
@@ -233,7 +251,7 @@ the bad answer is to just make a separate button or different text fields but th
                         weightText.clear();
                         gradeText.clear();
                         gradeTracker.getListView().getSelectionModel().clearSelection();
-                        refreshButton(confirm, nameText, gradeText, weightText);
+                        refreshButton(confirm, nameText, gradeText, weightText, pane);
                     });
                 }
             }
@@ -258,7 +276,7 @@ the bad answer is to just make a separate button or different text fields but th
 
     }
 
-    public void refreshButton(Button confirm, TextField nameText, TextField gradeText, TextField weightText){
+    public void refreshButton(Button confirm, TextField nameText, TextField gradeText, TextField weightText, Pane pane){
 
             if (gradeTracker.getListView().getSelectionModel().isEmpty()) {
                 confirm.setOnAction(event -> {
@@ -286,3 +304,4 @@ the bad answer is to just make a separate button or different text fields but th
         launch(args);
     }
 }
+
